@@ -3873,6 +3873,8 @@ void settiles(void){
 #endif
 #else
 
+#ifdef PICOMITE
+
 #if rp2350
 // thread to do nothing but allow rom_flash_op to work
 void __not_in_flash_func(NullCore)()
@@ -3885,8 +3887,6 @@ void __not_in_flash_func(NullCore)()
     }
 }
 #endif
-
-#ifdef PICOMITE
 
 void __not_in_flash_func(UpdateCore)()
 {
@@ -4175,8 +4175,10 @@ int MIPS16 main(){
     i=watchdog_caused_reboot();
 
 #ifdef rp2350
+#ifdef PICOMITE
     multicore_reset_core1();
-    multicore_launch_core1_with_stack(NullCore,core1stack,512);
+    multicore_launch_core1_with_stack(NullCore,core1stack,sizeof(core1stack));
+#endif
 
     restart_reason=powman_hw->chip_reset | i;
     rp2350a=(*((io_ro_32*)(SYSINFO_BASE + SYSINFO_PACKAGE_SEL_OFFSET)) & 1);
