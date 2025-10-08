@@ -4,22 +4,22 @@ PicoMite MMBasic
 Picomite.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
 2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 #ifdef __cplusplus
@@ -33,7 +33,7 @@ extern "C" {
 #include "configuration.h"
 #include "hardware/watchdog.h"
 #include "hardware/clocks.h"
-#include "hardware/flash.h"
+#include "flash.h"
 #include "hardware/adc.h"
 #include "hardware/exception.h"
 #include "MMBasic_Includes.h"
@@ -65,7 +65,7 @@ extern void start_vga_i2s(void);
     #include "usb_host_files/tusb_config.h"
 #else
     #include "pico/unique_id.h"
-    #include "class/cdc/cdc_device.h" 
+    #include "class/cdc/cdc_device.h"
 #endif
 #ifndef rp2350
     #include "hardware/structs/ssi.h"
@@ -185,7 +185,7 @@ extern void start_vga_i2s(void);
 int ListCnt;
 int MMCharPos;
 int MMPromptPos;
-int busfault=0; 
+int busfault=0;
 int ExitMMBasicFlag = false;
 volatile int MMAbort = false;
 unsigned int _excep_peek;
@@ -239,7 +239,7 @@ const uint8_t *SavedVarsFlash = (const uint8_t *) (XIP_BASE + FLASH_TARGET_OFFSE
 const uint8_t *flash_target_contents = (const uint8_t *) (XIP_BASE + FLASH_TARGET_OFFSET + FLASH_ERASE_SIZE + SAVEDVARS_FLASH_SIZE);
 const uint8_t *flash_progmemory = (const uint8_t *) (XIP_BASE + PROGSTART);
 const uint8_t *flash_libmemory = (const uint8_t *) (XIP_BASE + PROGSTART - MAX_PROG_SIZE);
-int ticks_per_second; 
+int ticks_per_second;
 int InterruptUsed;
 int calibrate=0;
 char id_out[12];
@@ -379,7 +379,7 @@ const struct s_PinDef PinDef[]={
 		{ 23, 99, "GND", UNUSED  ,99, 99},                                                          // pin 23
 		{ 24, 18, "HDMI", UNUSED  ,99, 99},                                                          // pin 24
 		{ 25, 19, "HDMI", UNUSED  ,99, 99},                                                          // pin 25
-#else	
+#else
 		{ 16, 12, "GP12",  DIGITAL_IN | DIGITAL_OUT | SPI1RX | UART0TX | I2C0SDA | PWM6A ,99, 6},   // pin 16
 		{ 17, 13, "GP13",  DIGITAL_IN | DIGITAL_OUT | UART0RX | I2C0SCL | PWM6B	,99, 134},    		// pin 17
 		{ 18, 99, "GND", UNUSED  ,99, 99},                                                          // pin 18
@@ -495,7 +495,7 @@ void __not_in_flash_func(routinechecks)(void){
             multicore_fifo_push_blocking((uint32_t)low_y | (high_y<<16));
             low_x=silly_low; high_y=silly_high; low_y=silly_low; high_x=silly_high;
         }
-	}  
+	}
 #endif
 	if(GPSchannel)processgps();
     if(diskchecktimer == 0)CheckSDCard();
@@ -536,9 +536,9 @@ void __not_in_flash_func(routinechecks)(void){
             classicread=0;
             classic1=2;
         }
-        ClassicTimer=0; 
+        ClassicTimer=0;
     }
-    if(nunchuck1 && NunchuckTimer>=10){ 
+    if(nunchuck1 && NunchuckTimer>=10){
         if(nunchuckread==false){
 			WiiSend(sizeof(readcontroller),(char *)readcontroller);
             if(!mmI2Cvalue)nunchuckread=1;
@@ -581,7 +581,7 @@ char  __not_in_flash_func(SerialConsolePutC)(char c, int flush) {
 	   	if (MMCharPos!=1){
 		   MMCharPos -= 1;
 	   	}
-	}    
+	}
 #ifdef PICOMITEWEB
     if(Option.Telnet!=-1){
 #endif
@@ -593,7 +593,7 @@ char  __not_in_flash_func(SerialConsolePutC)(char c, int flush) {
                 fflush(stdout);
             }
         }
-    } 
+    }
 #endif
     if(Option.SerialConsole){
         int empty=uart_is_writable((Option.SerialConsole & 3)==1 ? uart0 : uart1);
@@ -716,7 +716,7 @@ void MMgetline(int filenbr, char *p) {
 	char *tp;
 
     while(1) {
-        CheckAbort();	
+        CheckAbort();
         if(FileTable[filenbr].com > MAXCOMPORTS && FileEOF(filenbr)) break;
         c = MMfgetc(filenbr);
         if(c <= 0) continue;                                       // keep looping if there are no chars
@@ -772,7 +772,7 @@ void MMgetline(int filenbr, char *p) {
             } else
                 continue ;                                          // for files loop around looking for the following newline
         }
-        
+
 		if(isprint(c)) {
 			if(filenbr == 0 && EchoOption) MMputchar(c,1);           // The console requires that chars be echoed
 		}
@@ -805,7 +805,7 @@ void MIPS16 EditInputLine(void) {
     int CharIndex, BufEdited;
     int c, i, j;
     int l4,l3,l2;
-    maxchars=255; 
+    maxchars=255;
     if(Option.DISPLAY_CONSOLE && Option.Width<=SCREENWIDTH){     //We will always assume the Vt100 is 80 colums if LCD is the console <=80.
       l2=SCREENWIDTH+1-MMPromptPos;
       l3=2*SCREENWIDTH+2-MMPromptPos;
@@ -818,7 +818,7 @@ void MIPS16 EditInputLine(void) {
     // Build "\e[80C" equivalent string for the line length
     //strcpy(goend,"\e[");IntToStr(linelen,l2+MMPromptPos, 10);strcat(goend,linelen); strcat(goend, "C");
      strcpy(goend,"\e[");IntToStr(&goend[strlen(goend)],l2+MMPromptPos, 10);strcat(goend, "C");
-    
+
     MMPrintString((char *)inpbuf);                                                     // display the contents of the input buffer (if any)
     CharIndex = strlen((const char *)inpbuf);                                          // get the current cursor position in the line
     insert = false;
@@ -857,16 +857,16 @@ void MIPS16 EditInputLine(void) {
                                 i = CharIndex - 1;
                                 j= CharIndex;
                                 for(p = (char *)inpbuf + i; *p; p++) *p = *(p + 1);                 // remove the char from inpbuf
- 
+
                                 // Lets put the cursor at the beginning of where the command is displayed.
                                 // backspace to the beginning of line
 #define USEBACKSPACE
-#ifdef USEBACKSPACE                                
+#ifdef USEBACKSPACE
                                 while(j)  {
                                   if (j==l4 || j==l3 ||j==l2 ){DisplayPutC('\b');SSPrintString("\e[1A");SSPrintString(goend);}else{ MMputchar('\b',0);}
                                   j--;
                                 }
-                                fflush(stdout);                                
+                                fflush(stdout);
                                  MX470Display(CLEAR_TO_EOS);SSPrintString("\033[0J");        //Clear to End Of Screen
 #else
                                  CurrentX=0;CurrentY=CurrentY-((CharIndex+1)/Option.Width * gui_font_height);
@@ -969,7 +969,7 @@ void MIPS16 EditInputLine(void) {
                             break;
 
                 case CTRLKEY('U'):
-                case HOME:  
+                case HOME:
                            BufEdited = true;
                            if(CharIndex > 0) {
                                 if(CharIndex == strlen((const char *)inpbuf)) {
@@ -989,11 +989,11 @@ void MIPS16 EditInputLine(void) {
                             break;
 
                 case CTRLKEY('K'):
-                case END:   
+                case END:
                             BufEdited = true;
                             while(CharIndex < strlen((const char *)inpbuf)){
                                 MMputchar(inpbuf[CharIndex++],0);
-                            }   
+                            }
                             fflush(stdout);
                             break;
 
@@ -1033,10 +1033,10 @@ void MIPS16 EditInputLine(void) {
                             ExecuteProgram((unsigned char *)"MM.PROMPT\0");
                          } else{
                              MMPrintString("> ");                                    // print the prompt
-                         }                           
+                         }
             	         //MMPrintString("> ");
             	         fflush(stdout);
-                    }    
+                    }
                     break;
                 case 0x96:
                     if(*Option.F6key)strcpy(&buf[1],(char *)Option.F6key);
@@ -1061,7 +1061,7 @@ void MIPS16 EditInputLine(void) {
                     break;
                 case CTRLKEY('E'):
                 case UP:    if(!(BufEdited /*|| autoOn || CurrentLineNbr */)) {
-                              
+
                                 if(lastcmd_edit) {
                                     i = lastcmd_idx + strlen((const char *)&lastcmd[lastcmd_idx]) + 1;    // find the next command
                                     if(lastcmd[i] != 0 && i < sizeof(lastcmd) - 1) lastcmd_idx = i;  // and point to it for the next time around
@@ -1073,7 +1073,7 @@ void MIPS16 EditInputLine(void) {
                             break;
 
                 case CTRLKEY('X'):
-                case DOWN:  
+                case DOWN:
                            if(!(BufEdited /*|| autoOn || CurrentLineNbr */)) {
                                if(lastcmd_idx == 0)
                                     *inpbuf = lastcmd_edit = 0;
@@ -1086,11 +1086,11 @@ void MIPS16 EditInputLine(void) {
                             }
                             break;
 
-                insert_lastcmd: 
+                insert_lastcmd:
 
                             // If NoScroll and its near the bottom then clear screen and write command at top
                             //if(Option.NoScroll && Option.DISPLAY_CONSOLE && (CurrentY + 2*gui_font_height >= VRes)){
-                            if(Option.NoScroll && Option.DISPLAY_CONSOLE && (CurrentY + (2 + strlen((const char *)inpbuf)/Option.Width)*gui_font_height >= VRes)){    
+                            if(Option.NoScroll && Option.DISPLAY_CONSOLE && (CurrentY + (2 + strlen((const char *)inpbuf)/Option.Width)*gui_font_height >= VRes)){
                                       ClearScreen(gui_bcolour);CurrentX=0;CurrentY=0;
                                       if(FindSubFun((unsigned char *)"MM.PROMPT", 0) >= 0) {
                                          SSPrintString("\r");
@@ -1098,8 +1098,8 @@ void MIPS16 EditInputLine(void) {
                                       } else{
                                          SSPrintString("\r");
                                          MMPrintString("> ");                           // print the prompt
-                                      }    
-                          
+                                      }
+
                             }else{
 			                   // Lets put the cursor at the beginning of where the command is displayed.
                                // backspace to the beginning of line
@@ -1118,13 +1118,13 @@ void MIPS16 EditInputLine(void) {
                             fflush(stdout);
                             CharIndex = strlen((const char *)inpbuf);                                     // get the current cursor position in the line
                             break;
-                            
 
- 
- 
+
+
+
                 default:    if(buf[0] >= ' ' && buf[0] < 0x7f) {
-                               // BufEdited = true;  
-                               
+                               // BufEdited = true;
+
                                 i = CharIndex;
                                 j = strlen((const char *)inpbuf);
                                 if(insert) {
@@ -1137,24 +1137,24 @@ void MIPS16 EditInputLine(void) {
                                     for(j = strlen((const char *)inpbuf); j > CharIndex; j--){
                                       if (j==l4 || j==l3 || j==l2){DisplayPutC('\b');SSPrintString("\e[1A");SSPrintString(goend);}else{ MMputchar('\b',0);}
                                     }
-                                    fflush(stdout);  
+                                    fflush(stdout);
                                 } else {
                                     if(strlen((const char *)inpbuf) >= maxchars-1 ) break;               // sorry, line full  just ignore
                                     inpbuf[strlen((const char *)inpbuf) + 1] = 0;                         // incase we are adding to the end of the string
                                     inpbuf[CharIndex++] = buf[0];                           // overwrite the char
-                                    MMputchar(buf[0],0);  
+                                    MMputchar(buf[0],0);
                                     if(j==l4-1 || j==l3-1 || j==l2-1){SSPrintString(" ");SSPrintString("\b");}
                                     fflush(stdout);
-                                  
+
                                 }
-#ifndef PICOMITEVGA                                                                     
+#ifndef PICOMITEVGA
                                 i = CharIndex;
                                 j = strlen((const char *)inpbuf);
                                 // If its going to scroll then clear screen
                                 if(Option.NoScroll && Option.DISPLAY_CONSOLE){
                                    if(CurrentY + 2*gui_font_height >= VRes) {
                                       ClearScreen(gui_bcolour);/*CurrentX=0*/;CurrentY=0;
-                                      CurrentX = (MMPromptPos-2)*gui_font_width  ;          
+                                      CurrentX = (MMPromptPos-2)*gui_font_width  ;
                                       //if(FindSubFun((unsigned char *)"MM.PROMPT", 0) >= 0) {
                                       //   ExecuteProgram((unsigned char *)"MM.PROMPT\0");
                                       //} else{
@@ -1162,13 +1162,13 @@ void MIPS16 EditInputLine(void) {
                                          //MMPrintString("> ");                           // print the prompt
                                          DisplayPutC('>');
                                          DisplayPutC(' ');
-                                      //}    
+                                      //}
                                       DisplayPutS((char *)inpbuf);                      // display the line
-                                      
+
                                     }
                                 }
-#endif                                
- 
+#endif
+
                             }
                             break;
             }
@@ -1179,10 +1179,10 @@ void MIPS16 EditInputLine(void) {
 //        Cursor = C_STANDARD;
         }
     }
-    
+
     saveline:
 //    Cursor = C_STANDARD;
-   
+
    if(strlen((const char *)inpbuf) < maxchars)InsertLastcmd(inpbuf);
    MMPrintString("\r\n");
 }
@@ -1240,7 +1240,7 @@ void MIPS16 EditInputLine(void) {
                                 while(CharIndex)  { MMputchar('\b',0); CharIndex--; }         // go to the beginning of the line
                                 MMPrintString((char *)inpbuf); MMputchar(' ',0); MMputchar('\b',0);     // display the line and erase the last char
                                 for(CharIndex = strlen((const char *)inpbuf); CharIndex > i; CharIndex--)
-                                    MMputchar('\b',0);  
+                                    MMputchar('\b',0);
                                 fflush(stdout);                                      // return the cursor to the righ position
                             }
                             break;
@@ -1254,7 +1254,7 @@ void MIPS16 EditInputLine(void) {
                                 MMputchar('\b',1);
                                 CharIndex--;
                             }
-                            break; 
+                            break;
 
                 case CTRLKEY('D'):
                 case RIGHT: if(CharIndex < strlen((const char *)inpbuf)) {
@@ -1271,7 +1271,7 @@ void MIPS16 EditInputLine(void) {
                                 while(CharIndex)  { MMputchar('\b',0); CharIndex--; }         // go to the beginning of the line
                                 MMPrintString((char *)inpbuf); MMputchar(' ',0); MMputchar('\b',0);     // display the line and erase the last char
                                 for(CharIndex = strlen((const char *)inpbuf); CharIndex > i; CharIndex--)
-                                    MMputchar('\b',0);   
+                                    MMputchar('\b',0);
                                 fflush(stdout);                                     // return the cursor to the right position
                             }
                             break;
@@ -1295,7 +1295,7 @@ void MIPS16 EditInputLine(void) {
                 case CTRLKEY('K'):
                 case END:   while(CharIndex < strlen((const char *)inpbuf)){
                                 MMputchar(inpbuf[CharIndex++],0);
-                            }   
+                            }
                             fflush(stdout);
                             break;
 
@@ -1332,7 +1332,7 @@ void MIPS16 EditInputLine(void) {
                          if(Option.DISPLAY_CONSOLE){ClearScreen(gui_bcolour);CurrentX=0;CurrentY=0;}
             	         MMPrintString("> ");
             	         fflush(stdout);
-                    }    
+                    }
                     break;
                 case 0x96:
                     if(*Option.F6key)strcpy(&buf[1],(char *)Option.F6key);
@@ -1357,7 +1357,7 @@ void MIPS16 EditInputLine(void) {
                     break;
                 case CTRLKEY('E'):
                 case UP:    if(!(BufEdited /*|| autoOn || CurrentLineNbr */)) {
-                                while(CharIndex)  { MMputchar('\b',0); CharIndex--; } 
+                                while(CharIndex)  { MMputchar('\b',0); CharIndex--; }
                                 fflush(stdout);       // go to the beginning of line
                                 if(lastcmd_edit) {
                                     i = lastcmd_idx + strlen((const char *)&lastcmd[lastcmd_idx]) + 1;    // find the next command
@@ -1372,7 +1372,7 @@ void MIPS16 EditInputLine(void) {
 
                 case CTRLKEY('X'):
                 case DOWN:  if(!(BufEdited /*|| autoOn || CurrentLineNbr */)) {
-                                while(CharIndex)  { MMputchar('\b',0); CharIndex--; }   
+                                while(CharIndex)  { MMputchar('\b',0); CharIndex--; }
                                 fflush(stdout);      // go to the beginning of line
                                 if(lastcmd_idx == 0)
                                     *inpbuf = lastcmd_edit = 0;
@@ -1412,7 +1412,7 @@ void MIPS16 EditInputLine(void) {
                                     inpbuf[CharIndex] = buf[0];                             // insert the char
                                     MMPrintString((char *)&inpbuf[CharIndex]);                      // display new part of the line
                                     CharIndex++;
-                                    for(j = strlen((const char *)inpbuf); j > CharIndex; j--) MMputchar('\b',0); 
+                                    for(j = strlen((const char *)inpbuf); j > CharIndex; j--) MMputchar('\b',0);
                                         fflush(stdout);                                   // return the cursor to the right position
                                 } else {
                                     inpbuf[strlen((const char *)inpbuf) + 1] = 0;                         // incase we are adding to the end of the string
@@ -1490,7 +1490,7 @@ bool MIPS16 __not_in_flash_func(timer_callback)(repeating_timer_t *rt)
         static int IrTimeout, IrTick, NextIrTick;
         int ElapsedMicroSec, IrDevTmp, IrCmdTmp;
 #ifdef rp2350
-    if(ExtCurrentConfig[FAST_TIMER_PIN] == EXT_FAST_TIMER && --INT5Timer <= 0) { 
+    if(ExtCurrentConfig[FAST_TIMER_PIN] == EXT_FAST_TIMER && --INT5Timer <= 0) {
         static uint64_t now,last=0;
         uint32_t hi = INT5Count;
         uint32_t lo;
@@ -1507,7 +1507,7 @@ bool MIPS16 __not_in_flash_func(timer_callback)(repeating_timer_t *rt)
         now=((uint64_t) hi *50000) + lo;
         INT5Value=now-last;
         last=now;
-        INT5Timer = INT5InitTimer; 
+        INT5Timer = INT5InitTimer;
     }
 #if defined(PICOMITE) && defined(rp2350)
     if(Option.LOCAL_KEYBOARD && mSecTimer % LOCALKEYSCANRATE==0)cmd_keyscan();
@@ -1523,7 +1523,7 @@ bool MIPS16 __not_in_flash_func(timer_callback)(repeating_timer_t *rt)
 #ifdef USBKEYBOARD
 		keytimer++;
         for(int i=0;i<4;i++){
-            if(HID[i].Device_type){ 
+            if(HID[i].Device_type){
                 HID[i].report_timer++;
             }
         }
@@ -1576,13 +1576,13 @@ bool MIPS16 __not_in_flash_func(timer_callback)(repeating_timer_t *rt)
         ElapsedMicroSec = readIRclock();
         if(IrState > IR_WAIT_START && ElapsedMicroSec > 15000) IrReset();
         IrCmdTmp = -1;
-        
+
         // check for any Sony IR receive activity
         if(IrState == SONY_WAIT_BIT_START && ElapsedMicroSec > 2800 && (IrCount == 12 || IrCount == 15 || IrCount == 20)) {
             IrDevTmp = ((IrBits >> 7) & 0b11111);
             IrCmdTmp = (IrBits & 0b1111111) | ((IrBits >> 5) & ~0b1111111);
         }
-        
+
         // check for any NEC IR receive activity
         if(IrState == NEC_WAIT_BIT_END && IrCount == 32) {
             // check if it is a NON extended address and adjust if it is
@@ -1653,7 +1653,7 @@ bool MIPS16 __not_in_flash_func(timer_callback)(repeating_timer_t *rt)
 
     ////////////////////////////////// this code runs once a second /////////////////////////////////
     if(++SecondsTimer >= 1000) {
-        SecondsTimer -= 1000; 
+        SecondsTimer -= 1000;
     #ifndef PICOMITEWEB
         if(ExtCurrentConfig[PinDef[HEARTBEATpin].pin]==EXT_HEARTBEAT)gpio_xor_mask64(1<<PinDef[HEARTBEATpin].GPno);
     #endif
@@ -1696,10 +1696,10 @@ void __not_in_flash_func(uSec)(int us) {
 void __not_in_flash_func(ProcessWeb)(int mode){
     static uint64_t flushtimer=0;
     static uint64_t lastusec=0;
-    static int testcount=0;  
+    static int testcount=0;
     static int lastonoff=0;
     static uint64_t lastheartmsec=0;
-    uint64_t timenow=time_us_64();   
+    uint64_t timenow=time_us_64();
     if(!WIFIconnected && startupcomplete)goto flashonly;
     TCP_SERVER_T *state = (TCP_SERVER_T*)TCPstate;
     if(!state)return;
@@ -1836,7 +1836,7 @@ void sigbus(void){
     MMPrintString("Error: Invalid address - resetting\r\n");
 	uSec(250000);
 	disable_interrupts_pico();
-//	flash_range_erase(PROGSTART, MAX_PROG_SIZE);
+//	flash_erase(PROGSTART, MAX_PROG_SIZE);
     LoadOptions();
     if(Option.NoReset==0){
         Option.Autorun=0;
@@ -2221,7 +2221,7 @@ void QVgaPioInit()
 	// prepare default PIO program config
 	pio_sm_config cfg = qvga_program_get_default_config(QVGAOff);
 
-	// map state machine's OUT and MOV pins	
+	// map state machine's OUT and MOV pins
 	sm_config_set_out_pins(&cfg, QVGA_GPIO_FIRST, QVGA_GPIO_NUM);
 
 	// set sideset pins (HSYNC and VSYNC)
@@ -2401,6 +2401,8 @@ void (* volatile Core1Fnc)() = NULL; // core 1 remote function
 // QVGA core
 void __not_in_flash_func(QVgaCore)()
 {
+    flash_safe_execute_core_init(); // allow flash operations to lock out this core
+
 	// initialize QVGA
 	QVgaInit();
 
@@ -2417,7 +2419,7 @@ void __not_in_flash_func(QVgaCore)()
             if(command==0xAAAA){
                 irq_set_enabled(DMA_IRQ_0, true);
             }
-        } 
+        }
     }
 }
 uint32_t core1stack[128];
@@ -2670,7 +2672,7 @@ void MIPS64 __not_in_flash_func(dma_irq_handler0)() {
     dma_channel_hw_t *ch = &dma_hw->ch[ch_num];
     dma_hw->intr = 1u << ch_num;
     dma_pong = !dma_pong;
- 
+
     if (v_scanline >= MODE_V_FRONT_PORCH && v_scanline < (MODE_V_FRONT_PORCH + MODE_V_SYNC_WIDTH)) {
         ch->read_addr = (uintptr_t)vblank_line_vsync_on;
         ch->transfer_count = count_of(vblank_line_vsync_on);
@@ -2689,7 +2691,7 @@ void MIPS64 __not_in_flash_func(dma_irq_handler0)() {
 
     if (!vactive_cmdlist_posted) {
         v_scanline = (v_scanline + 1) % MODE_V_TOTAL_LINES;
-    } 
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -2841,7 +2843,7 @@ void MIPS32 __not_in_flash_func(HDMIloopX)(void){
                         }
                     }
                     break;
-                case SCREENMODE5: //256 x 192 x 8bit-colour 
+                case SCREENMODE5: //256 x 192 x 8bit-colour
                     {
                         uint8_t *p=(uint8_t *)HDMIlines[line_to_load];
                         uint8_t l,d,s;
@@ -3020,7 +3022,7 @@ void MIPS32 __not_in_flash_func(HDMIloop1)(void){
                         }
                     }
                     break;
-                case SCREENMODE5: //320 x 180 x 8bit-colour 
+                case SCREENMODE5: //320 x 180 x 8bit-colour
                     {
                         uint8_t *p=(uint8_t *)HDMIlines[line_to_load];
                         uint8_t l,d,s;
@@ -3199,7 +3201,7 @@ void MIPS32 __not_in_flash_func(HDMIloop2)(void){
                         }
                     }
                     break;
-                case SCREENMODE5: //256 x 192 x 8bit-colour 
+                case SCREENMODE5: //256 x 192 x 8bit-colour
                     {
                         uint8_t *p=(uint8_t *)HDMIlines[line_to_load];
                         uint8_t l,d,s;
@@ -3334,7 +3336,7 @@ void MIPS32 __not_in_flash_func(HDMIloop3)(void){
                         }
                     }
                     break;
-                case SCREENMODE5: //400 x 300 x 8bit-colour or 424/400 x 240 x 8bit-colour 
+                case SCREENMODE5: //400 x 300 x 8bit-colour or 424/400 x 240 x 8bit-colour
                     {
                         uint8_t *p=(uint8_t *)HDMIlines[line_to_load];
                         uint8_t l,d;
@@ -3510,6 +3512,8 @@ void mapreset(void){
     }
 }
 void HDMICore(void){
+    flash_safe_execute_core_init(); // allow flash operations to lock out this core
+
     mapreset();
     if(Option.CPU_Speed==FreqXGA){
         MODE_H_SYNC_POLARITY=MODE_H_L_SYNC_POLARITY;
@@ -3705,13 +3709,13 @@ void HDMICore(void){
     vactive_line[8] =    HSTX_CMD_TMDS       | MODE_H_ACTIVE_PIXELS;
         // Configure HSTX's TMDS encoder for RGB332
     hstx_ctrl_hw->expand_tmds =
-        ((FullColour) ? 
+        ((FullColour) ?
             (29 << HSTX_CTRL_EXPAND_TMDS_L0_ROT_LSB   |
             4  << HSTX_CTRL_EXPAND_TMDS_L0_NBITS_LSB |
             2 << HSTX_CTRL_EXPAND_TMDS_L1_ROT_LSB   |
             4  << HSTX_CTRL_EXPAND_TMDS_L1_NBITS_LSB |
             7 << HSTX_CTRL_EXPAND_TMDS_L2_ROT_LSB   |
-            4  << HSTX_CTRL_EXPAND_TMDS_L2_NBITS_LSB) 
+            4  << HSTX_CTRL_EXPAND_TMDS_L2_NBITS_LSB)
             :
             (2  << HSTX_CTRL_EXPAND_TMDS_L2_NBITS_LSB |
             0  << HSTX_CTRL_EXPAND_TMDS_L2_ROT_LSB   |
@@ -3723,7 +3727,7 @@ void HDMICore(void){
     // Pixels (TMDS) come in 4 8-bit chunks. Control symbols (RAW) are an
     // entire 32-bit word.
     hstx_ctrl_hw->expand_shift =
-        ((FullColour) ? 
+        ((FullColour) ?
             (2 << HSTX_CTRL_EXPAND_SHIFT_ENC_N_SHIFTS_LSB |
             16 << HSTX_CTRL_EXPAND_SHIFT_ENC_SHIFT_LSB |
             1 << HSTX_CTRL_EXPAND_SHIFT_RAW_N_SHIFTS_LSB |
@@ -3743,7 +3747,7 @@ void HDMICore(void){
         5u << HSTX_CTRL_CSR_CLKDIV_LSB |
         5u << HSTX_CTRL_CSR_N_SHIFTS_LSB |
         2u << HSTX_CTRL_CSR_SHIFT_LSB |
-        HSTX_CTRL_CSR_EN_BITS; 
+        HSTX_CTRL_CSR_EN_BITS;
 
     // Note we are leaving the HSTX clock at the SDK default of 125 MHz; since
     // we shift out two bits per HSTX clock cycle, this gives us an output of
@@ -3771,7 +3775,7 @@ void HDMICore(void){
     lane_to_output_bit[0]=Option.HDMId0;
     lane_to_output_bit[1]=Option.HDMId1;
     lane_to_output_bit[2]=Option.HDMId2;
-        
+
     for (uint lane = 0; lane < 3; ++lane) {
         // For each TMDS lane, assign it to the correct GPIO pair based on the
         // desired pinout:
@@ -3868,8 +3872,22 @@ void settiles(void){
 
 #endif
 #else
+
 #ifdef PICOMITE
-#include "pico/multicore.h"
+
+#if rp2350
+// thread to do nothing but allow rom_flash_op to work
+void __not_in_flash_func(NullCore)()
+{
+    flash_safe_execute_core_init(); // allow flash operations to lock out this core
+
+	while (true)
+	{
+        tight_loop_contents();
+    }
+}
+#endif
+
 void __not_in_flash_func(UpdateCore)()
 {
 //    systick_hw->csr = 0x5;
@@ -3877,6 +3895,8 @@ void __not_in_flash_func(UpdateCore)()
 //    while(multicore_fifo_rvalid()) {
 //        multicore_fifo_pop_blocking();
 //    }
+
+    flash_safe_execute_core_init(); // allow flash operations to lock out this core
 
 	while (true)
 	{
@@ -3955,13 +3975,13 @@ void __not_in_flash_func(UpdateCore)()
                 spi_write_data(t >> 8);
                 spi_write_data(t);
 #endif
-            } else if(command==1){ 
+            } else if(command==1){
                 uint8_t *s=(uint8_t *)multicore_fifo_pop_blocking();
                 mutex_enter_blocking(&frameBufferMutex);			// lock the frame buffer
                 copyframetoscreen(s,0,HRes-1,0,VRes-1,0);
                 mutex_exit(&frameBufferMutex);
             }
-        } 
+        }
     }
 
 }
@@ -4126,7 +4146,7 @@ void WebConnect(void){
             MMPrintString(Option.hostname);
             netif_set_hostname(cyw43_state.netif, Option.hostname);
         }
-        cyw43_wifi_pm(&cyw43_state, CYW43_NO_POWERSAVE_MODE);        
+        cyw43_wifi_pm(&cyw43_state, CYW43_NO_POWERSAVE_MODE);
         MMPrintString(" connecting to WiFi...\r\n");
         if (cyw43_arch_wifi_connect_timeout_ms((char *)Option.SSID, (char *)(*Option.PASSWORD ? Option.PASSWORD : NULL), (*Option.PASSWORD ? CYW43_AUTH_WPA2_AES_PSK : CYW43_AUTH_OPEN), 30000)) {
             MMPrintString("failed to connect.\r\n");
@@ -4142,7 +4162,7 @@ void WebConnect(void){
         }
     } else {
         cyw43_arch_enable_sta_mode();
-        cyw43_wifi_pm(&cyw43_state, CYW43_NO_POWERSAVE_MODE);        
+        cyw43_wifi_pm(&cyw43_state, CYW43_NO_POWERSAVE_MODE);
     }
     cyw43_wifi_pm(&cyw43_state, CYW43_DEFAULT_PM & ~0xf);
 }
@@ -4152,8 +4172,14 @@ int MIPS16 main(){
     static int ErrorInPrompt;
     int i=0;
     char savewatchdog=false;
-        i=watchdog_caused_reboot();
+    i=watchdog_caused_reboot();
+
 #ifdef rp2350
+#ifdef PICOMITE
+    multicore_reset_core1();
+    multicore_launch_core1_with_stack(NullCore,core1stack,sizeof(core1stack));
+#endif
+
     restart_reason=powman_hw->chip_reset | i;
     rp2350a=(*((io_ro_32*)(SYSINFO_BASE + SYSINFO_PACKAGE_SEL_OFFSET)) & 1);
 #else
@@ -4230,7 +4256,7 @@ int MIPS16 main(){
     else if(Option.CPU_Speed>320000  && Option.CPU_Speed<=360000 )vreg_set_voltage(VREG_VOLTAGE_1_40);  // Std default @ boot is 1_10
     else vreg_set_voltage(VREG_VOLTAGE_1_60);  // Std default @ boot is 1_10
 #else
-    else vreg_set_voltage(VREG_VOLTAGE_1_30); 
+    else vreg_set_voltage(VREG_VOLTAGE_1_30);
 #endif
     sleep_ms(10);
 #ifdef rp2350
@@ -4323,7 +4349,7 @@ int MIPS16 main(){
         heap_memory_size=HEAP_MEMORY_SIZE-framebuffersize+320*240*2;
         FRAMEBUFFER=AllMemory+heap_memory_size+256;
     }
-#endif 
+#endif
 #endif
     uSec(100);
     hw_clear_bits(&watchdog_hw->ctrl, WATCHDOG_CTRL_ENABLE_BITS);
@@ -4404,19 +4430,12 @@ if(Option.CPU_Speed==FreqSVGA){ //adjust the size of the heap
 #ifndef PICOMITEVGA
 #ifndef PICOCALC
     InitDisplaySSD();
-#endif
-    InitDisplaySPI(0);
-#ifndef PICOCALC
     InitDisplayI2C(0);
     InitDisplayVirtual();
 #endif
+    InitDisplaySPI(0);
     InitTouch();
-#ifndef PICOCALC
     if(Option.BackLightLevel)setBacklight(Option.BackLightLevel, 0);
-#else
-    uSec(300000);
-    if(Option.BackLightLevel)setBacklight(Option.BackLightLevel);
-#endif
 #endif
     ErrorInPrompt = false;
     exception_set_exclusive_handler(HARDFAULT_EXCEPTION,sigbus);
@@ -4425,7 +4444,7 @@ if(Option.CPU_Speed==FreqSVGA){ //adjust the size of the heap
     exception_set_exclusive_handler(NMI_EXCEPTION ,sigbus);
     exception_set_exclusive_handler(SYSTICK_EXCEPTION,sigbus);
     while((i=getConsole())!=-1){}
-    
+
 #ifdef PICOMITEVGA
 //        bus_ctrl_hw->priority = BUSCTRL_BUS_PRIORITY_DMA_W_BITS | BUSCTRL_BUS_PRIORITY_DMA_R_BITS;
     #ifdef HDMI
@@ -4446,7 +4465,7 @@ if(Option.CPU_Speed==FreqSVGA){ //adjust the size of the heap
         piomap[QVGA_PIO_NUM]|=(uint64_t)((uint64_t)1<<(uint64_t)PinDef[Option.audio_i2s_bclk].GPno);
         piomap[QVGA_PIO_NUM]|=(uint64_t)((uint64_t)1<<(uint64_t)(PinDef[Option.audio_i2s_bclk].GPno+1));
     }
-    #endif        
+    #endif
         X_TILE=Option.X_TILE;
         Y_TILE=Option.Y_TILE;
         ytileheight=(X_TILE==80 || X_TILE==106)? 12 : 16;
@@ -4460,11 +4479,12 @@ if(Option.CPU_Speed==FreqSVGA){ //adjust the size of the heap
     #else
     #ifdef PICOMITE
         bus_ctrl_hw->priority=0x100;
+        multicore_reset_core1();
         multicore_launch_core1_with_stack(UpdateCore,core1stack,2048);
         core1stack[0]=0x12345678;
     #endif
 #endif
-        strcpy((char *)banner,MES_SIGNON); 
+        strcpy((char *)banner,MES_SIGNON);
 #ifdef rp2350
     #ifdef PICOMITEVGA
         #ifdef HDMI
@@ -4573,14 +4593,14 @@ if(Option.CPU_Speed==FreqSVGA){ //adjust the size of the heap
     start_i2s(QVGA_PIO_NUM,1);
 #endif
 
-   
+
 	if(setjmp(mark) != 0) {
      // we got here via a long jump which means an error or CTRL-C or the program wants to exit to the command prompt
         FlashLoad = 0;
 //        LoadOptions();
 #ifdef USBKEYBOARD
 	    clearrepeat();
-#endif	    
+#endif
         ScrewUpTimer = 0;
         ProgMemory=(uint8_t *)flash_progmemory;
         ContinuePoint = nextstmt;                               // in case the user wants to use the continue command
@@ -4631,7 +4651,7 @@ if(Option.CPU_Speed==FreqSVGA){ //adjust the size of the heap
             }  else {
                 Option.Autorun=0;
                 SaveOptions();
-            }       
+            }
         }
     }
     while(1) {
@@ -4675,7 +4695,7 @@ if(Option.CPU_Speed==FreqSVGA){ //adjust the size of the heap
         } else{
             MMPrintString("> ");                                    // print the prompt
             MMPromptPos=2;    //Save length of prompt
-        }    
+        }
         ErrorInPrompt = false;
         EditInputLine();
         //InsertLastcmd(inpbuf);                                  // save in case we want to edit it later
@@ -4731,7 +4751,7 @@ void stripcomment(char *p){
 void MIPS16 SaveProgramToFlash(unsigned char *pm, int msg) {
     unsigned char *p, fontnbr, prevchar = 0, buf[STRINGSIZE];
     unsigned short endtoken, tkn;
-    int nbr, i, j, n, SaveSizeAddr;
+    int nbr, i, n, SaveSizeAddr;
     bool continuation=false;
     multi=false;
     uint32_t storedupdates[MAXCFUNCTION], updatecount=0, realflashsave;
@@ -4741,16 +4761,10 @@ void MIPS16 SaveProgramToFlash(unsigned char *pm, int msg) {
 #endif
 #ifdef USBKEYBOARD
 	clearrepeat();
-#endif	
+#endif
     memcpy(buf, tknbuf, STRINGSIZE);                                // save the token buffer because we are going to use it
     FlashWriteInit(PROGRAM_FLASH);
-    flash_range_erase(realflashpointer, MAX_PROG_SIZE);
-    j=MAX_PROG_SIZE/4;
-    int *pp=(int *)(flash_progmemory);
-        while(j--)if(*pp++ != 0xFFFFFFFF){
-            enable_interrupts_pico();
-            error("Flash erase problem");
-        }
+    flash_erase(realflashpointer, MAX_PROG_SIZE);
     nbr = 0;
     // this is used to count the number of bytes written to flash
     while(*pm) {
@@ -4847,11 +4861,11 @@ contloop:
              realflashpointer+=4;
              p++;
              skipspace(p);
-             if(!fontnbr) { //process CSub 
+             if(!fontnbr) { //process CSub
                  if(!isnamestart((uint8_t)*p)){
                     enable_interrupts_pico();
                     error("Function name");
-                 }  
+                 }
                  do { p++; } while(isnamechar((uint8_t)*p));
                  skipspace(p);
                  if(!(isxdigit((uint8_t)p[0]) && isxdigit((uint8_t)p[1]) && isxdigit((uint8_t)p[2]))) {
@@ -4947,10 +4961,10 @@ contloop:
              //FlashWriteWord(fontnbr - 1);                        // a low number (< FONT_TABLE_SIZE) marks the entry as a font
              // B31 = 1 now marks entry as font.
              FlashWriteByte(fontnbr - 1);
-             FlashWriteByte(0x00);  
              FlashWriteByte(0x00);
-             FlashWriteByte(0x80);    
-           
+             FlashWriteByte(0x00);
+             FlashWriteByte(0x80);
+
 
              skipelement(p);                                     // go to the end of the command
              p--;
@@ -5044,7 +5058,7 @@ contloop:
         FlashWriteClose();
         error("Not enough memory");
 }
- 
+
 
 #ifdef __cplusplus
 }

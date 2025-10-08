@@ -4,22 +4,22 @@ PicoMite MMBasic
 audio.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
 2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 /**
@@ -37,7 +37,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #include "ffconf.h"
 #include "hardware/pwm.h"
 #include "hardware/irq.h"
-#include "hardware/flash.h"
+#include "flash.h"
 #include "MMBasic_Includes.h"
 #include "Hardware_Includes.h"
 #define DRWAV_COPY_MEMORY(dst, src, sz) memcpy((dst), (src), (sz))
@@ -63,7 +63,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #ifdef rp2350
 #include "dr_mp3.h"
 #define MOD_BUFFER_SIZE WAV_BUFFER_SIZE
-#else 
+#else
 #define MOD_BUFFER_SIZE (WAV_BUFFER_SIZE/4)*3
 #endif
 #include "hardware/pio.h"
@@ -110,10 +110,10 @@ commands and functions
  ********************************************************************************************************************************************/
 
 // define the PWM output frequency for making a tone
-const char* const PlayingStr[] = {"PAUSED TONE", "PAUSED FLAC", "PAUSED MP3",  "PAUSED SOUND", "PAUSED MOD", "PAUSED ARRAY", "PAUSED WAV", "OFF", 
-    "OFF", "TONE", "SOUND", "WAV", "FLAC", "MP3", 
-    "MIDI", "", "MOD", "STREAM", "ARRAY", "" 
-}  ;                              
+const char* const PlayingStr[] = {"PAUSED TONE", "PAUSED FLAC", "PAUSED MP3",  "PAUSED SOUND", "PAUSED MOD", "PAUSED ARRAY", "PAUSED WAV", "OFF",
+    "OFF", "TONE", "SOUND", "WAV", "FLAC", "MP3",
+    "MIDI", "", "MOD", "STREAM", "ARRAY", ""
+}  ;
 volatile unsigned char PWM_count = 0;
 volatile float PhaseM_left, PhaseM_right;
 volatile uint64_t SoundPlay;
@@ -628,7 +628,7 @@ size_t onRead(void  *userdata,  char  *pBufferOut,   size_t bytesToRead){
     	if(!MDD_SDSPI_CardDetectState())ErrorCheck(WAV_fnbr);
 	} else {
 		nbr=lfs_file_read(&lfs, FileTable[WAV_fnbr].lfsptr, pBufferOut, bytesToRead);
-		if(nbr<0)FSerror=nbr;	
+		if(nbr<0)FSerror=nbr;
 		else FSerror=0;
 		ErrorCheck(WAV_fnbr);
 	}
@@ -723,7 +723,7 @@ void playvs1053(int mode){
 	XRST=PinDef[Option.AUDIO_RESET_PIN].GPno;
 	VS1053(XCS,XDCS,DREQ,XRST);
 	switchToMp3Mode();
-	loadDefaultVs1053Patches(); 
+	loadDefaultVs1053Patches();
 	setVolumes(vol_left,vol_right);
 	//playing a file
 	setrate(6000); //32KHz should be fast enough
@@ -743,7 +743,7 @@ void playvs1053(int mode){
 	ppos=0;
 	playreadcomplete=0;
 	pwm_set_irq0_enabled(AUDIO_SLICE, true);
-	pwm_set_enabled(AUDIO_SLICE, true); 
+	pwm_set_enabled(AUDIO_SLICE, true);
 	uint64_t t=time_us_64();
 	uSec(25);
 	while(1){ //read all the headers without stalling
@@ -760,7 +760,7 @@ void playimmediatevs1053(int play){
 	XRST=PinDef[Option.AUDIO_RESET_PIN].GPno;
 	VS1053(XCS,XDCS,DREQ,XRST);
 	switchToMp3Mode();
-	loadDefaultVs1053Patches(); 
+	loadDefaultVs1053Patches();
 	setVolumes(vol_left,vol_right);
 	//playing a file
 	setrate(PWM_FREQ); //16KHz should be fast enough
@@ -821,7 +821,7 @@ void wavcallback(char *p){
     ppos=0;
     playreadcomplete=0;
 	pwm_set_irq0_enabled(AUDIO_SLICE, true);
-	pwm_set_enabled(AUDIO_SLICE, true); 
+	pwm_set_enabled(AUDIO_SLICE, true);
 }
 void mp3callback(char *p, int position){
     if(strchr((char *)p, '.') == NULL) strcat((char *)p, ".mp3");
@@ -880,7 +880,7 @@ void mp3callback(char *p, int position){
     ppos=0;
     playreadcomplete=0;
 	pwm_set_irq0_enabled(AUDIO_SLICE, true);
-	pwm_set_enabled(AUDIO_SLICE, true); 
+	pwm_set_enabled(AUDIO_SLICE, true);
 //	MMPrintString("Playing ");MMPrintString(p);PRet();
 #endif
 }
@@ -957,7 +957,7 @@ void flaccallback(char *p){
     ppos=0;
     playreadcomplete=0;
 	pwm_set_irq0_enabled(AUDIO_SLICE, true);
-	pwm_set_enabled(AUDIO_SLICE, true); 
+	pwm_set_enabled(AUDIO_SLICE, true);
 
 }
 void rampvolume(int l, int r, int channel, int target){
@@ -1143,7 +1143,7 @@ void MIPS16 cmd_play(void) {
         else if(CurrentlyPlaying == P_PAUSE_MOD)  CurrentlyPlaying = P_MOD;
         else if(CurrentlyPlaying == P_PAUSE_ARRAY)  CurrentlyPlaying = P_ARRAY;
         else
-            error("Nothing to resume");  
+            error("Nothing to resume");
         return;
     }
     if(checkstring(cmdline, (unsigned char *)"CLOSE")) {
@@ -1160,7 +1160,7 @@ void MIPS16 cmd_play(void) {
 			pwm_set_irq0_enabled(AUDIO_SLICE, false);
 			setVolumes(vol_left, vol_right);
 			pwm_set_irq0_enabled(AUDIO_SLICE, true);
-			pwm_set_enabled(AUDIO_SLICE, true); 
+			pwm_set_enabled(AUDIO_SLICE, true);
 		}
         return;
     }
@@ -1171,7 +1171,7 @@ void MIPS16 cmd_play(void) {
         uint64_t PlayDuration = 0xffffffffffffffff;                     // default is to play forever
 //        uint64_t  x;
         {// get the command line arguments
-			getargs(&tp, 7,(unsigned char *)","); 
+			getargs(&tp, 7,(unsigned char *)",");
 			if(!(argc == 3 || argc == 5 || argc == 7)) error("Argument count");
 //			if(Option.AUDIO_MISO_PIN)error("Not available with VS1053 audio");
 			mono=0;
@@ -1212,7 +1212,7 @@ void MIPS16 cmd_play(void) {
 			}
 			CurrentlyPlaying = P_TONE;
 			pwm_set_irq0_enabled(AUDIO_SLICE, true);
-			pwm_set_enabled(AUDIO_SLICE, true); 
+			pwm_set_enabled(AUDIO_SLICE, true);
 			return;
 		}
     }
@@ -1265,7 +1265,7 @@ void MIPS16 cmd_play(void) {
 		nextbuf=2;
 		ppos=0;
 		pwm_set_irq0_enabled(AUDIO_SLICE, true);
-		pwm_set_enabled(AUDIO_SLICE, true); 
+		pwm_set_enabled(AUDIO_SLICE, true);
 		return;
 	}
     if((tp = checkstring(cmdline, (unsigned char *)"SOUND"))) {//PLAY SOUND channel, type, position, frequency, volume
@@ -1391,7 +1391,7 @@ void MIPS16 cmd_play(void) {
 			setrate(PWM_FREQ);
 			if(Option.AUDIO_MISO_PIN)playimmediatevs1053(P_SOUND);
     		pwm_set_irq0_enabled(AUDIO_SLICE, true);
-			pwm_set_enabled(AUDIO_SLICE, true); 
+			pwm_set_enabled(AUDIO_SLICE, true);
 		}
         CurrentlyPlaying = P_SOUND;
         return;
@@ -1589,14 +1589,14 @@ void MIPS16 cmd_play(void) {
 		XRST=PinDef[Option.AUDIO_RESET_PIN].GPno;
 		VS1053(XCS,XDCS,DREQ,XRST);
 		switchToMp3Mode();
-		loadDefaultVs1053Patches(); 
+		loadDefaultVs1053Patches();
 		setVolumes(vol_left,vol_right);
-		MMPrintString("Stream output enabled\r\n");	
+		MMPrintString("Stream output enabled\r\n");
 		playreadcomplete=0;
 		CurrentlyPlaying=P_STREAM;
 		setrate(16000); //16KHz should be fast enough
 		pwm_set_irq0_enabled(AUDIO_SLICE, true);
-		pwm_set_enabled(AUDIO_SLICE, true); 
+		pwm_set_enabled(AUDIO_SLICE, true);
 		return;
 	}
 	if((tp = checkstring(cmdline, (unsigned char *)"MIDI"))) {
@@ -1615,7 +1615,7 @@ void MIPS16 cmd_play(void) {
 		if((xp = checkstring(tp, (unsigned char *)"TEST"))) {
 			getargs(&xp,1,(unsigned char *)",");
 			if(!midienabled)error("Midi output not enabled");
-			miditest(getint(argv[0],1,3));	
+			miditest(getint(argv[0],1,3));
 			return;
 		}
 		if(!Option.AUDIO_MISO_PIN)error("Only available with VS1053 audio");
@@ -1878,7 +1878,7 @@ void MIPS16 cmd_play(void) {
 #endif
 			if(RoundUpK4(fsize)>1024*Option.modbuffsize)error("File too large for modbuffer");
 			char *check=modbuff;
-			while(!FileEOF(WAV_fnbr)) { 
+			while(!FileEOF(WAV_fnbr)) {
 				if(*check++ != FileGetChar(WAV_fnbr)){
 					alreadythere=0;
 					break;
@@ -1889,7 +1889,7 @@ void MIPS16 cmd_play(void) {
 			modbuff=GetMemory(RoundUpK4(fsize));
 			positionfile(WAV_fnbr,0);
 			char *r=modbuff;
-			while(!FileEOF(WAV_fnbr)) { 
+			while(!FileEOF(WAV_fnbr)) {
 				*r++=FileGetChar(WAV_fnbr);
 			}
 		}
@@ -1899,16 +1899,16 @@ void MIPS16 cmd_play(void) {
 			positionfile(WAV_fnbr,0);
 			uint32_t j = RoundUpK4(TOP_OF_SYSTEM_FLASH);
 			disable_interrupts_pico();
-			flash_range_erase(j, RoundUpK4(fsize));
+			flash_erase(j, RoundUpK4(fsize));
 			enable_interrupts_pico();
-			while(!FileEOF(WAV_fnbr)) { 
+			while(!FileEOF(WAV_fnbr)) {
 				memset(r,0,256) ;
 				for(i=0;i<256;i++) {
 					if(FileEOF(WAV_fnbr))break;
 					r[i] = FileGetChar(WAV_fnbr);
-				}  
+				}
 				disable_interrupts_pico();
-				flash_range_program(j, (uint8_t *)r, 256);
+				flash_program(j, (uint8_t *)r, 256);
 				enable_interrupts_pico();
 				routinechecks();
 				j+=256;
@@ -1944,7 +1944,7 @@ void MIPS16 cmd_play(void) {
         setrate(44100);
 		audiorepeat=2;
     	pwm_set_irq0_enabled(AUDIO_SLICE, true);
-		pwm_set_enabled(AUDIO_SLICE, true); 
+		pwm_set_enabled(AUDIO_SLICE, true);
 		Timer1=500;
 		while(Timer1){
 			checkWAVinput();
@@ -1981,7 +1981,7 @@ void MIPS16 cmd_play(void) {
     }
     error("Unknown command");
 }
-/* 
+/*
  * @cond
  * The following section will be excluded from the documentation.
  */
@@ -2125,7 +2125,7 @@ void checkWAVinput(void){
 					wav_filesize=bcount[2];
 				}
 				nextbuf=swingbuf;
-			} 
+			}
 		}
 	}
     if(wav_filesize<=0 && (CurrentlyPlaying == P_WAV || (CurrentlyPlaying == P_FLAC)|| (CurrentlyPlaying == P_MP3) || (CurrentlyPlaying == P_MIDI))){

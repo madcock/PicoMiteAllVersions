@@ -4,22 +4,22 @@ PicoMite MMBasic
 mmc_stm32.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
 2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 
@@ -133,7 +133,7 @@ void __not_in_flash_func(SPIAudio)(uint16_t left, uint16_t right){
 	spi_write16_blocking((AUDIO_SPI==1 ? spi0 : spi1),&l,1);
 	gpio_put(AUDIO_CS_PIN,GPIO_PIN_SET);
 
-	
+
 }
 void (*AudioOutput)(uint16_t left, uint16_t right) = (void (*)(uint16_t, uint16_t))DefaultAudio;
 
@@ -393,7 +393,7 @@ void MIPS16 __not_in_flash_func(on_pwm_wrap)(void) {
 					else swingbuf=1;
 				}
 			}
-		} else if(CurrentlyPlaying == P_STREAM){ 
+		} else if(CurrentlyPlaying == P_STREAM){
 			int rp=*streamreadpointer,wp=*streamwritepointer;
 			if(rp==wp)return;
 			int i = wp - rp;
@@ -1286,7 +1286,7 @@ int getslice(int pin){
 }
 void setpwm(int pin, int *PWMChannel, int *PWMSlice, MMFLOAT frequency, MMFLOAT duty){
 	int slice=getslice(pin);
-	gpio_init(PinDef[pin].GPno); 
+	gpio_init(PinDef[pin].GPno);
 	gpio_set_function(PinDef[pin].GPno, GPIO_FUNC_PWM);
 	int wrap=(Option.CPU_Speed*1000)/frequency;
 	int high=(int)((MMFLOAT)Option.CPU_Speed/frequency*duty*10.0);
@@ -1556,11 +1556,7 @@ void InitReservedIO(void) {
 		gpio_set_function(PinDef[Option.SYSTEM_I2C_SDA].GPno, GPIO_FUNC_I2C);
 		if(PinDef[Option.SYSTEM_I2C_SDA].mode & I2C0SDA){
 			I2C0locked=1;
-#ifdef PICOCALC
-			i2c_init(i2c0,(Option.SYSTEM_I2C_SLOW ? 10000:400000));
-#else
 			i2c_init(i2c0,(Option.SYSTEM_I2C_SLOW ? 100000:400000));
-#endif
 			gpio_pull_up(PinDef[Option.SYSTEM_I2C_SCL].GPno);
 			gpio_pull_up(PinDef[Option.SYSTEM_I2C_SDA].GPno);
 			I2C_enabled=1;
@@ -1576,7 +1572,7 @@ void InitReservedIO(void) {
 #endif
 			gpio_pull_up(PinDef[Option.SYSTEM_I2C_SCL].GPno);
 			gpio_pull_up(PinDef[Option.SYSTEM_I2C_SDA].GPno);
-			I2C2_enabled=1;	
+			I2C2_enabled=1;
 			I2C1SDApin=Option.SYSTEM_I2C_SDA;
 			I2C1SCLpin=Option.SYSTEM_I2C_SCL;
 			I2C2_Timeout=SystemI2CTimeout;
@@ -1589,7 +1585,7 @@ void InitReservedIO(void) {
 			CheckI2CKeyboard(1,1);
 			uSec(2000);
 		}
-#endif	
+#endif
 	}
 #if defined(PICOMITE) && defined(rp2350)
 	if(Option.LCD_CLK && !(Option.LCD_CLK==Option.SYSTEM_CLK)){
@@ -1639,7 +1635,7 @@ void InitReservedIO(void) {
 			SET_SPI_CLK=HW1Clk;
 			SPI1locked=1;
 		} else {
-			SET_SPI_CLK=BitBangSetClk; 
+			SET_SPI_CLK=BitBangSetClk;
 		}
 		gpio_init(SPI_CLK_PIN);
 		gpio_set_drive_strength(SPI_CLK_PIN,GPIO_DRIVE_STRENGTH_8MA);
@@ -1730,7 +1726,7 @@ void InitReservedIO(void) {
 			} else if(PinDef[Option.AUDIO_CLK_PIN].mode & SPI1SCK && PinDef[Option.AUDIO_MOSI_PIN].mode & SPI1TX){
 				SPI1locked=1;
 				AUDIO_SPI=2;
-			} 
+			}
 			gpio_init(AUDIO_CLK_PIN);
 			gpio_set_drive_strength(AUDIO_CLK_PIN,GPIO_DRIVE_STRENGTH_8MA);
 			gpio_put(AUDIO_CLK_PIN,GPIO_PIN_RESET);
@@ -1774,7 +1770,7 @@ void InitReservedIO(void) {
 		} else { //VS1053 audio
 			AUDIO_DREQ_PIN=PinDef[Option.AUDIO_DREQ_PIN].GPno;
 			ExtCfg(Option.AUDIO_DREQ_PIN, EXT_BOOT_RESERVED, 0);
-			gpio_init(AUDIO_DREQ_PIN); 
+			gpio_init(AUDIO_DREQ_PIN);
 			gpio_set_dir(AUDIO_DREQ_PIN, GPIO_IN);
 			gpio_set_input_hysteresis_enabled(AUDIO_DREQ_PIN,true);
 
@@ -1823,14 +1819,14 @@ void InitReservedIO(void) {
 		}
 	}
 #ifdef rp2350
-	} 
+	}
 #endif
 #endif
 	if(Option.SerialConsole){
 		ExtCfg(Option.SerialTX, EXT_BOOT_RESERVED, 0);
 		ExtCfg(Option.SerialRX, EXT_BOOT_RESERVED, 0);
 		gpio_set_function(PinDef[Option.SerialTX].GPno, GPIO_FUNC_UART);
-		gpio_set_function(PinDef[Option.SerialRX].GPno, GPIO_FUNC_UART);		
+		gpio_set_function(PinDef[Option.SerialRX].GPno, GPIO_FUNC_UART);
 		uart_init((Option.SerialConsole & 3)==1 ? uart0: uart1, Option.Baudrate);
 		uart_set_hw_flow((Option.SerialConsole & 3)==1 ? uart0: uart1, false, false);
 		uart_set_format((Option.SerialConsole & 3)==1  ? uart0: uart1, 8, 1, UART_PARITY_NONE);
@@ -1855,7 +1851,7 @@ void InitReservedIO(void) {
 		ExtCfg(Option.MOUSE_CLOCK, EXT_BOOT_RESERVED, 0);
     	ExtCfg(Option.MOUSE_DATA, EXT_BOOT_RESERVED, 0);
 	}
-#endif	
+#endif
 }
 
 char *pinsearch(int pin){

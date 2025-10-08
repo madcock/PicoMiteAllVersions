@@ -1,4 +1,4 @@
-/* 
+/*
  * @cond
  * The following section will be excluded from the documentation.
  */
@@ -76,7 +76,6 @@ INLINE void cb()
 #include "configuration.h"
 #include "hardware/watchdog.h"
 #include "hardware/clocks.h"
-#include "hardware/flash.h"
 #include "hardware/adc.h"
 #include "hardware/exception.h"
 #include "hardware/structs/systick.h"
@@ -91,7 +90,7 @@ INLINE void cb()
 #endif
 #ifndef USBKEYBOARD
 	#include "pico/unique_id.h"
-	#include "class/cdc/cdc_device.h" 
+	#include "class/cdc/cdc_device.h"
 #endif
 
 

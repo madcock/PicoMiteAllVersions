@@ -18,7 +18,7 @@ Use the [official guide to update your keyboard firmware](https://github.com/clo
 
 Any assembly/disassembly of the PicoCalc risks damaging the extremely fragile screen. Once it's damaged, there's no way to fix it, and a replacement will be needed. if necessary, contact [alex@clockworkpi.com](mailto:alex@clockworkpi.com) for a replacement, and give him your original order invoice details and (usually picture) proof of screen damage. Be _very_ careful the display is seated properly when assembling! I recommend taping the screen down as [described in this post](https://forum.clockworkpi.com/t/before-replacing-the-pico-read-this-to-avoid-cracked-screen/16666/10). Electrical tape and kapton tape have both proven to work. The important thing is to never reattach the back with screws unless you are certain the screen is seated properly.
 
-INSTALL PICO SDK
+INSTALL LATEST PICO SDK
 ----------------
 ```bash
 sudo apt update && sudo apt install -y cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential git
@@ -26,25 +26,12 @@ sudo apt update && sudo apt install -y cmake gcc-arm-none-eabi libnewlib-arm-non
 mkdir -p ~/pico && cd ~/pico
 git clone https://github.com/raspberrypi/pico-sdk.git
 cd pico-sdk
-git checkout tags/2.2.0 -b sdk2.2.0
-git submodule update --init
+git submodule update --init --recursive
 
 echo 'export PICO_SDK_PATH=~/pico/pico-sdk' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-SETUP PICOCALC FIRMWARE
------------------------
-```bash
-mkdir -p ~/picocalc && cd ~/picocalc
-git clone https://github.com/madcock/PicoMiteAllVersions.git
-cd PicoMiteAllVersions
-mv ~/pico/pico-sdk/src/rp2_common/hardware_gpio/gpio.c ~/pico/pico-sdk/src/rp2_common/hardware_gpio/gpio.bak
-ln -s ~/picocalc/PicoMiteAllVersions/gpio.c ~/pico/pico-sdk/src/rp2_common/hardware_gpio/gpio.c
-mv ~/pico/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h ~/pico/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.bak
-ln -s ~/picocalc/PicoMiteAllVersions/gpio.h ~/pico/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h
-
-```
 EDIT ``~/picocalc/PicoMiteAllVersions/CMakeLists.txt`` TO CHOOSE TARGET
 -----------------------------------------------------------------------
 ```makefile

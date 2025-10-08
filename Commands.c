@@ -4,22 +4,22 @@ PicoMite MMBasic
 * @file commands.c
 
 <COPYRIGHT HOLDERS>  @author Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
 2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 ************************************************************************************************************************/
@@ -36,7 +36,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 
 #include "MMBasic_Includes.h"
 #include "Hardware_Includes.h"
-#include "hardware/flash.h"
+#include "flash.h"
 #include "hardware/dma.h"
 #include "hardware/structs/watchdog.h"
 #ifdef PICOMITE
@@ -69,19 +69,19 @@ const uint8_t pinlist[]={ //this is a Basic program to print out the status of a
 };
 const uint8_t i2clist[]={ //this is a Basic program to print out the I2C devices connected to the SYSTEM I2C pins
   1, 132, 128, 105, 110, 116, 101, 103, 101, 114, 32, 95, 97, 100, 0,
-  1, 132, 128, 105, 110, 116, 101, 103, 101, 114, 32, 120, 95, 44, 121, 95, 0, 
-  1, 168, 128, 34, 32, 72, 69, 88, 32, 32, 48, 32, 32, 49, 32, 32, 50, 32, 32, 51, 32, 32, 52, 32, 32, 53, 32, 32, 54, 32, 32, 55, 32, 32, 
-  56, 32, 32, 57, 32, 32, 65, 32, 32, 66, 32, 32, 67, 32, 32, 68, 32, 32, 69, 32, 32, 70, 34, 0, 
-  1, 153, 128, 121, 95, 32, 144, 32, 48, 32, 204, 32, 55, 0, 
-  1, 168, 128, 34, 32, 34, 59, 32, 164, 121, 95, 44, 32, 49, 41, 59, 32, 34, 48, 58, 32, 34, 59, 0, 
-  1, 153, 128, 120, 95, 32, 144, 32, 48, 32, 204, 32, 49, 53, 0, 
-  1, 161, 128, 95, 97, 100, 32, 144, 32, 121, 95, 32, 133, 32, 49, 54, 32, 130, 32, 120, 95, 0, 
-  1, 158, 128, 241, 83, 89, 83, 84, 69, 77, 32, 73, 50, 67, 41, 144, 34, 73, 50, 67, 34, 32, 203, 32, 228, 128, 99, 104, 
-  101, 99, 107, 32, 95, 97, 100, 32, 199, 32, 229, 128, 32, 99, 104, 101, 99, 107, 32, 95, 97, 100, 0, 
-  1, 158, 128, 243, 68, 41, 32, 144, 32, 48, 32, 203, 0, 
-  1, 158, 128, 95, 97, 100, 32, 144, 32, 48, 32, 203, 32, 168, 128, 34, 45, 45, 32, 34, 59, 0, 
-  1, 158, 128, 95, 97, 100, 32, 143, 32, 48, 32, 203, 32, 168, 128, 164, 95, 97, 100, 44, 32, 50, 41, 59, 34, 32, 34, 59, 0, 
-  1, 139, 128, 0, 1, 168, 128, 34, 45, 45, 32, 34, 59, 0, 1, 143, 128, 0, 1, 166, 128, 120, 95, 0, 
+  1, 132, 128, 105, 110, 116, 101, 103, 101, 114, 32, 120, 95, 44, 121, 95, 0,
+  1, 168, 128, 34, 32, 72, 69, 88, 32, 32, 48, 32, 32, 49, 32, 32, 50, 32, 32, 51, 32, 32, 52, 32, 32, 53, 32, 32, 54, 32, 32, 55, 32, 32,
+  56, 32, 32, 57, 32, 32, 65, 32, 32, 66, 32, 32, 67, 32, 32, 68, 32, 32, 69, 32, 32, 70, 34, 0,
+  1, 153, 128, 121, 95, 32, 144, 32, 48, 32, 204, 32, 55, 0,
+  1, 168, 128, 34, 32, 34, 59, 32, 164, 121, 95, 44, 32, 49, 41, 59, 32, 34, 48, 58, 32, 34, 59, 0,
+  1, 153, 128, 120, 95, 32, 144, 32, 48, 32, 204, 32, 49, 53, 0,
+  1, 161, 128, 95, 97, 100, 32, 144, 32, 121, 95, 32, 133, 32, 49, 54, 32, 130, 32, 120, 95, 0,
+  1, 158, 128, 241, 83, 89, 83, 84, 69, 77, 32, 73, 50, 67, 41, 144, 34, 73, 50, 67, 34, 32, 203, 32, 228, 128, 99, 104,
+  101, 99, 107, 32, 95, 97, 100, 32, 199, 32, 229, 128, 32, 99, 104, 101, 99, 107, 32, 95, 97, 100, 0,
+  1, 158, 128, 243, 68, 41, 32, 144, 32, 48, 32, 203, 0,
+  1, 158, 128, 95, 97, 100, 32, 144, 32, 48, 32, 203, 32, 168, 128, 34, 45, 45, 32, 34, 59, 0,
+  1, 158, 128, 95, 97, 100, 32, 143, 32, 48, 32, 203, 32, 168, 128, 164, 95, 97, 100, 44, 32, 50, 41, 59, 34, 32, 34, 59, 0,
+  1, 139, 128, 0, 1, 168, 128, 34, 45, 45, 32, 34, 59, 0, 1, 143, 128, 0, 1, 166, 128, 120, 95, 0,
   1, 168, 128, 0, 1, 166, 128, 121, 95, 0, 1, 147, 128, 120, 95, 44, 121, 95, 0,
   1, 147, 128, 95, 97, 100, 0,0
  };
@@ -119,7 +119,7 @@ void __not_in_flash_func(cmd_null)(void) {
 	// do nothing (this is just a placeholder for commands that have no action)
 }
 /** @endcond */
-/** 
+/**
  * This command increments an integer or a float or concatenates two strings
  * @param a the integer, float or string to be changed
  * @param b OPTIONAL for integers and floats - defaults to 1. Otherwise the amount to increment the number or the string to concatenate
@@ -241,7 +241,7 @@ void cmd_print(void) {
 					MMfputs((unsigned char *)CtoM(inpbuf), fnbr);					// convert to a MMBasic string and output
 				} else if(t & T_STR) {
 					MMfputs((unsigned char *)s, fnbr);								// print if a string (s is a MMBasic string)
-				} else error("Attempt to print reserved word");	
+				} else error("Attempt to print reserved word");
 			}
 			docrlf = true;
 		}
@@ -373,7 +373,7 @@ void array_insert(unsigned char *tp){
 	unsigned char *a1str=NULL, *a2str=NULL;
 	unsigned char size=0,size2=0;
 #ifdef rp2350
-    int dims[MAXDIM]={0}; 
+    int dims[MAXDIM]={0};
 #else
     short dims[MAXDIM]={0};
 #endif
@@ -728,7 +728,7 @@ void MIPS16 do_run(unsigned char *cmdline, bool CMM2mode) {
 	cleanserver();
 #endif
 #ifndef USBKEYBOARD
-    if(mouse0==false && Option.MOUSE_CLOCK)initMouse0(0);  //see if there is a mouse to initialise 
+    if(mouse0==false && Option.MOUSE_CLOCK)initMouse0(0);  //see if there is a mouse to initialise
 #endif
 	nextstmt = ProgMemory;
 }
@@ -830,7 +830,7 @@ void MIPS16 cmd_list(void) {
 			}
 			dest[0]=ol;
 		}
-		
+
    	} else if((p = checkstring(cmdline, (unsigned char *)"PINS"))) {
 #if defined(PICOMITEWEB) && defined(rp2350)
 		if(!rp2350a)error("Incompatible board, RP2350A only" );
@@ -1002,7 +1002,7 @@ void cmd_help(void){
 						}
 					}
 				}
-			} 
+			}
 		}
 	FileClose(fnbr);
 	}
@@ -1041,7 +1041,7 @@ void MIPS16 cmd_new(void) {
 	FlashLoad=0;
 	uSec(250000);
     FlashWriteInit(PROGRAM_FLASH);
-    flash_range_erase(realflashpointer, MAX_PROG_SIZE);
+    flash_erase(realflashpointer, MAX_PROG_SIZE);
     FlashWriteByte(0); FlashWriteByte(0); FlashWriteByte(0);    // terminate the program in flash
     FlashWriteClose();
 #ifdef PICOMITEVGA
@@ -1063,7 +1063,7 @@ void MIPS16 cmd_erase(void) {
 		strcpy((char *)p, (char *)argv[i]);
 		if(*argv[i] & 0x80)error("You can't erase an in-built function");
         while(!isnamechar(p[strlen(p) - 1])) p[strlen(p) - 1] = 0;
-		makeupper((unsigned char *)p);  
+		makeupper((unsigned char *)p);
 		for(j = MAXVARS/2; j < MAXVARS; j++) {
             s = p;  x = (char *)g_vartbl[j].name; len = strlen(p);
             while(len > 0 && *s == *x) {                            // compare the variable to the name that we have
@@ -1309,7 +1309,7 @@ void MIPS16 __not_in_flash_func(cmd_else)(void) {
 	while(1) {
         p = GetNextCommand(p, NULL, (unsigned char *)"No matching ENDIF");
         CommandToken tkn=commandtbl_decode(p);
-		if(tkn == cmdIF) { 
+		if(tkn == cmdIF) {
 			// found a nested IF command, we now need to determine if it is a single or multiline IF
 			// search for a THEN, then check if only white space follows.  If so, it is multiline.
 			tp = p + sizeof(CommandToken);
@@ -1350,7 +1350,7 @@ if(Option.SerialConsole)while(ConsoleTxBufHead!=ConsoleTxBufTail)routinechecks()
 			} else {
 				unsigned char *cmd_args = (unsigned char *)"";
 				cmd_args = getCstring(argv[0]);
-				void *ptr = findvar((unsigned char *)"MM.ENDLINE$", T_STR| V_NOFIND_NULL);  
+				void *ptr = findvar((unsigned char *)"MM.ENDLINE$", T_STR| V_NOFIND_NULL);
 				if(ptr==NULL)ptr = findvar((unsigned char *)"MM.ENDLINE$", V_FIND |V_DIM_VAR);
 				strcpy(ptr, (char *)cmd_args ); // *** THW 16/4/23
 				CtoM(ptr);
@@ -1385,8 +1385,8 @@ if(Option.SerialConsole)while(ConsoleTxBufHead!=ConsoleTxBufTail)routinechecks()
 		TickInt[i]=NULL;
 		TickActive[i]=0;
 	}
-	InterruptUsed=0;       
-    InterruptReturn = NULL ; 
+	InterruptUsed=0;
+    InterruptReturn = NULL ;
     memset(inpbuf,0,STRINGSIZE);
 	CloseAudio(1);
 	CloseAllFiles();
@@ -1412,7 +1412,7 @@ if(Option.SerialConsole)while(ConsoleTxBufHead!=ConsoleTxBufTail)routinechecks()
 	close_tcpclient();
 #endif
 #ifndef USBKEYBOARD
-    if(mouse0==false && Option.MOUSE_CLOCK)initMouse0(0);  //see if there is a mouse to initialise 
+    if(mouse0==false && Option.MOUSE_CLOCK)initMouse0(0);  //see if there is a mouse to initialise
 #endif
 #if defined(PICOMITE) && defined(rp2350)
 	if(Option.DISPLAY_TYPE>=NEXTGEN)Option.Refresh=1;
@@ -1644,7 +1644,7 @@ void MIPS16 do_chain(unsigned char *cmdline){
 	cleanserver();
 #endif
 #ifndef USBKEYBOARD
-    if(mouse0==false && Option.MOUSE_CLOCK)initMouse0(0);  //see if there is a mouse to initialise 
+    if(mouse0==false && Option.MOUSE_CLOCK)initMouse0(0);  //see if there is a mouse to initialise
 #endif
 	nextstmt = ProgMemory;
 }
@@ -1886,10 +1886,10 @@ void MIPS16 cmd_trace(void) {
             	IntToStr((char *)inpbuf + 1, CountLines(TraceBuff[i]), 10);
             	strcat((char *)inpbuf, "]");
 			}else if(TraceBuff[i]){
-                strcpy((char *)inpbuf, "[Lib]");	
+                strcpy((char *)inpbuf, "[Lib]");
 			}else{
 			    inpbuf[0] = 0;
-			}	
+			}
             MMPrintString((char *)inpbuf);
             if(++i >= TRACE_BUFF_SIZE) i = 0;
         }
@@ -2267,7 +2267,7 @@ void cmd_exit(void) {
 	checkend(cmdline);
 	skipelement(nextstmt);
 }
- 
+
 
 
 /*void cmd_error(void) {
@@ -2437,7 +2437,7 @@ void cmd_flags(void) {
 	if(!*cmdline) error("Syntax");
 	g_flag=getinteger(++cmdline);
 }
-  
+
 void cmd_flag(void){
 	getargs(&cmdline,1,(unsigned char *)",");
 	uint64_t bit=(uint64_t)1<<(uint64_t)getint(argv[0],0,63);
@@ -2537,11 +2537,11 @@ void cmd_frame(void){
 		strcat(sp,";");
 		IntToStr(&sp[strlen(sp)],framex+1,10);
 		strcat(sp,"t");
-		SSPrintString(sp);	
+		SSPrintString(sp);
 		SSPrintString("\0337\033[2J\033[H");                            // vt100 clear screen and home cursor
 		ClearScreen(gui_bcolour);					//
 		return;
-	} 
+	}
 	if(!frame)error("Frame not created");
 	if((p=checkstring(cmdline,(unsigned char *)"CURSOR"))){
 		if(checkstring(p,(unsigned char *)"ON")){
@@ -3550,7 +3550,7 @@ unsigned char  *llist(unsigned char *b, unsigned char *p) {
 							!strncasecmp((char *)&b[1],"LABEL",5)
 						) *b='.';
 						else if(b[1]=='(')*b='&';
-					} 
+					}
 						b += strlen((char *)b);                                 // update pointer to the end of the buffer
                     if(isalpha(*(b - 1))) *b++ = ' ';               // add a space to the end of the command name
                 }
@@ -3587,7 +3587,7 @@ unsigned char  *llist(unsigned char *b, unsigned char *p) {
 
 		// must be the end of a line - so return to the caller
         while(*(b-1) == ' ' && b > b_start) --b;                    // eat any spaces on the end of the line
-		*b = 0;	
+		*b = 0;
 		replaceAlpha((char *)b_start, overlaid_functions) ;  //replace the user version of all the MM. functions
 		STR_REPLACE((char *)b_start, "PEEK(INT8", "PEEK(BYTE",0);
 		return ++p;
